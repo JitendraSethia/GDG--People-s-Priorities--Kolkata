@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}People's Priorities{% endblock %}
+{% block body_class %}citizen-app{% endblock %}
+{% block body %}
+{% include "partials/_citizen_nav.html" %}
+<main class="citizen-landing">
+  <section class="hero">
+    <div class="hero-inner">
+      <p class="hero-eyebrow" lang="bn">সমস্যা জানান &middot; সমাধান দেখুন</p>
+      <h1>Report a problem.<br>See it get fixed.</h1>
+      <p class="lede">
+        A pothole, a dark street, a dry tap — tell us in Bengali, Hindi or English,
+        by typing or speaking. Your report goes straight to the right ward official,
+        and you can follow every step.
+      </p>
+      <div class="cta-row">
+        <a role="button" class="cta-primary" href="{{ url_for('citizen.intake_form') }}">
+          <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-pencil" xlink:href="#i-pencil"></use></svg>
+          Report an issue
+        </a>
+        <a role="button" class="cta-ghost" href="{{ url_for('citizen.status_check') }}">
+          <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search" xlink:href="#i-search"></use></svg>
+          Track a report
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="container landing-body">
+    <section class="live-section">
+      <div class="section-head">
+        <h2>Right now in the city</h2>
+        <span class="live-chip"><span class="live-dot" aria-hidden="true"></span>Live</span>
+      </div>
+      <div class="stat-strip" id="live-stats" data-poll="/api/stats">
+        <div class="stat-card"><span class="stat-value" data-field="total_open">–</span><span class="stat-label">Open issues</span></div>
+        <div class="stat-card"><span class="stat-value" data-field="total_resolved">–</span><span class="stat-label">Resolved</span></div>
+        <div class="stat-card"><span class="stat-value" data-field="avg_resolution_hours">–</span><span class="stat-label">Avg. hours to fix</span></div>
+      </div>
+    </section>
+
+    <section class="how-section">
+      <h2>How it works</h2>
+      <ol class="steps">
+        <li>
+          <span class="step-num" aria-hidden="true">1</span>
+          <div class="step-body">
+            <strong>Tell us what's wrong</strong>
+            <span>Describe it in your own words — add a photo if you can.</span>
+          </div>
+        </li>
+        <li>
+          <span class="step-num" aria-hidden="true">2</span>
+          <div class="step-body">
+            <strong>We send it to the right desk</strong>
+            <span>Your ward office receives it, ranked by urgency.</span>
+          </div>
+        </li>
+        <li>
+          <span class="step-num" aria-hidden="true">3</span>
+          <div class="step-body">
+            <strong>You watch it get fixed</strong>
+            <span>Track every step with your ticket ID and ask questions any time.</span>
+          </div>
+        </li>
+      </ol>
+    </section>
+  </div>
+</main>
+{% endblock %}
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/landing.js') }}"></script>
+{% endblock %}

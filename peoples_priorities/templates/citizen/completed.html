@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Completed — People's Priorities{% endblock %}
+{% block body_class %}citizen-app{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/citizen.css') }}">{% endblock %}
+{% block body %}
+{% include "partials/_citizen_nav.html" %}
+<main class="container">
+  <header class="page-head">
+    <h1>Recently fixed</h1>
+    <p id="completed-summary" class="text-muted">Counting recent fixes…</p>
+  </header>
+
+  <div class="filter-row">
+    <label for="completed-ward-filter">Ward</label>
+    <select id="completed-ward-filter">
+      <option value="">All wards</option>
+      {% for ward in wards %}<option value="{{ ward }}">{{ ward }}</option>{% endfor %}
+    </select>
+  </div>
+
+  <div class="completed-list" id="completed-list">
+    <p aria-busy="true">Loading recent fixes…</p>
+  </div>
+</main>
+{% endblock %}
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/citizen_completed.js') }}"></script>
+{% endblock %}

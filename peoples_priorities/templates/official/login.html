@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Officials Login — People's Priorities{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/official.css') }}">{% endblock %}
+{% block body_class %}login-page{% endblock %}
+{% block body %}
+<main class="login-wrap">
+  <form method="post" class="login-card">
+    <div class="login-brand">
+      <img src="{{ url_for('static', filename='favicon.svg') }}" alt="" width="44" height="44">
+      <h1>People's Priorities</h1>
+      <p class="login-sub">Officials console · Kolkata</p>
+    </div>
+    {% if error %}<p class="login-error" role="alert">{{ error }}</p>{% endif %}
+    <label for="passcode">Authority passcode</label>
+    <input type="password" id="passcode" name="passcode" required autofocus
+           autocomplete="current-password" placeholder="Enter passcode">
+    <button type="submit">Sign in</button>
+    <p class="login-hint">Access is limited to authorised municipal staff.</p>
+  </form>
+</main>
+{% endblock %}

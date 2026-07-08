@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Report an Issue — People's Priorities{% endblock %}
+{% block body_class %}citizen-app{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/citizen.css') }}">{% endblock %}
+{% block body %}
+{% include "partials/_citizen_nav.html" %}
+<main class="container">
+  <header class="page-head">
+    <h1>Report an issue</h1>
+    <p>Tell us in English, বাংলা or हिंदी — typing and speaking both work.</p>
+  </header>
+
+  <form id="intake-form" class="intake-form">
+    <section class="form-step">
+      <div class="step-head">
+        <span class="step-num" aria-hidden="true">1</span>
+        <h2>What's the problem?</h2>
+      </div>
+      <div class="lang-toggle" role="group" aria-label="Choose your language">
+        <button type="button" class="active" data-lang="en" data-placeholder="e.g. Streetlight has been off for a week">English</button>
+        <button type="button" data-lang="bn" data-placeholder="যেমন: রাস্তার আলো এক সপ্তাহ ধরে বন্ধ">বাংলা</button>
+        <button type="button" data-lang="hi" data-placeholder="जैसे: स्ट्रीट लाइट एक हफ्ते से बंद है">हिंदी</button>
+      </div>
+      <input type="hidden" id="language" value="en">
+      <label for="raw_text" class="sr-only">Describe the problem</label>
+      <div class="textarea-wrap">
+        <textarea id="raw_text" name="raw_text" rows="4" required
+          placeholder="e.g. Streetlight has been off for a week"></textarea>
+        <button type="button" id="mic-btn" class="secondary mic-btn">🎤 Speak</button>
+      </div>
+    </section>
+
+    <section class="form-step">
+      <div class="step-head">
+        <span class="step-num" aria-hidden="true">2</span>
+        <h2>Where is it?</h2>
+      </div>
+      <div class="location-box" id="location-box">
+        <button type="button" id="geo-btn" class="geo-btn">
+          <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-pin" xlink:href="#i-pin"></use></svg>
+          Detect my location
+        </button>
+        <p id="geo-status" class="text-muted">We use your location to find your ward — you don't need to know it yourself.</p>
+        <p id="ward-result" class="ward-result" hidden></p>
+      </div>
+      <input type="hidden" id="latitude">
+      <input type="hidden" id="longitude">
+    </section>
+
+    <section class="form-step">
+      <div class="step-head">
+        <span class="step-num" aria-hidden="true">3</span>
+        <h2>Add a photo</h2>
+        <span class="opt-chip">Optional</span>
+      </div>
+      <div class="photo-box" id="photo-box">
+        <button type="button" id="camera-btn" class="secondary camera-btn">
+          <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-camera" xlink:href="#i-camera"></use></svg>
+          Take a photo
+        </button>
+        <input type="file" id="photo-fallback-input" accept="image/*" capture="environment" hidden>
+        <img id="photo-preview" hidden alt="Preview of your photo">
+        <p class="text-muted photo-hint">A photo helps officials find and fix it faster.</p>
+      </div>
+    </section>
+
+    <section class="form-step">
+      <div class="step-head">
+        <span class="step-num" aria-hidden="true">4</span>
+        <h2>How can we reach you?</h2>
+        <span class="opt-chip">Optional</span>
+      </div>
+      <label for="citizen_name">Your name</label>
+      <input type="text" id="citizen_name" name="citizen_name" placeholder="e.g. Anita Das" autocomplete="name">
+      <p class="field-hint" id="name-hint"></p>
+
+      <label for="citizen_phone">Mobile number</label>
+      <input type="tel" id="citizen_phone" name="citizen_phone" placeholder="For updates on this report" inputmode="numeric" autocomplete="tel">
+      <p class="field-hint" id="phone-hint"></p>
+    </section>
+
+    <p id="form-error" role="alert" class="form-error"></p>
+
+    <button type="submit" class="submit-btn">Submit report</button>
+  </form>
+</main>
+{% endblock %}
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/voice_intake.js') }}"></script>
+<script src="{{ url_for('static', filename='js/camera_capture.js') }}"></script>
+<script src="{{ url_for('static', filename='js/citizen_intake.js') }}"></script>
+{% endblock %}

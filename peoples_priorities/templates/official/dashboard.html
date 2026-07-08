@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Officials Dashboard — People's Priorities{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/official.css') }}">{% endblock %}
+{% block body %}
+{% include "partials/_official_nav.html" %}
+<main class="container">
+  <section class="stat-strip" id="dash-stats">
+    <div class="stat-card"><span class="stat-value" data-field="total_open">–</span><span class="stat-label">Open</span></div>
+    <div class="stat-card"><span class="stat-value" data-field="total_resolved">–</span><span class="stat-label">Resolved</span></div>
+    <div class="stat-card"><span class="stat-value" data-field="critical">–</span><span class="stat-label">Critical</span></div>
+    <div class="stat-card"><span class="stat-value" data-field="avg_resolution_hours">–</span><span class="stat-label">Avg. hrs to resolve</span></div>
+  </section>
+
+  <form class="filter-bar" id="filter-bar">
+    <select name="ward">
+      <option value="">All wards</option>
+      {% for ward in wards %}<option value="{{ ward }}">{{ ward }}</option>{% endfor %}
+    </select>
+    <select name="category">
+      <option value="">All categories</option>
+      {% for code, info in categories.items() %}<option value="{{ code }}">{{ info.label }}</option>{% endfor %}
+    </select>
+    <select name="status">
+      <option value="">Any status</option>
+      <option value="submitted">Submitted</option>
+      <option value="acknowledged">Acknowledged</option>
+      <option value="in_progress">In progress</option>
+      <option value="resolved">Resolved</option>
+      <option value="rejected">Rejected</option>
+    </select>
+    <select name="urgency_level">
+      <option value="">Any urgency</option>
+      <option value="critical">Critical</option>
+      <option value="high">High</option>
+      <option value="medium">Medium</option>
+      <option value="low">Low</option>
+    </select>
+    <input type="search" name="q" placeholder="Search text or ticket ID">
+    <label class="switch-label"><input type="checkbox" name="cluster" checked> Collapse duplicates</label>
+  </form>
+
+  <table class="queue-table">
+    <tbody id="queue-body">
+      <tr><td aria-busy="true">Loading grievances…</td></tr>
+    </tbody>
+  </table>
+  <div id="queue-empty" class="text-muted center" hidden>No grievances match these filters.</div>
+</main>
+{% include "partials/_grievance_modal.html" %}
+{% endblock %}
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/official_common.js') }}"></script>
+<script src="{{ url_for('static', filename='js/official_dashboard.js') }}"></script>
+{% endblock %}

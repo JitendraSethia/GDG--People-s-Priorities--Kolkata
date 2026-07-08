@@ -1,0 +1,9 @@
+{
+  "appId": "org.peoplespriorities.citizen",
+  "appName": "People's Priorities",
+  "webDir": "www",
+  "server": {
+    "url": "http://192.168.1.5:5000",
+    "cleartext": true
+  }
+}

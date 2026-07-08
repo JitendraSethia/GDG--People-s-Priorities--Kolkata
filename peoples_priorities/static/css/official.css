@@ -1,0 +1,262 @@
+.official-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 1.5rem;
+  border-bottom: 3px double var(--pp-border);
+  background: var(--pp-surface);
+}
+.official-nav .brand {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--pp-primary-dark);
+}
+.official-nav nav a {
+  margin-left: 1.2rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--pp-text-muted);
+  text-decoration: none;
+}
+.official-nav nav a.active, .official-nav nav a:hover { color: var(--pp-accent); }
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+  margin: 1.2rem 0;
+  padding: 0.9rem;
+  background: var(--pp-surface);
+  border: 1px solid var(--pp-border);
+  border-radius: var(--pp-radius);
+}
+.filter-bar select, .filter-bar input[type="search"] {
+  margin: 0;
+  width: auto;
+  min-width: 140px;
+}
+.filter-bar label.switch-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.queue-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 0.5rem;
+}
+.queue-row {
+  background: var(--pp-surface);
+  border: 1px solid var(--pp-border);
+  border-left: 4px solid var(--pp-border);
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.1s ease;
+}
+.queue-row td { padding: 0.7rem 0.8rem; vertical-align: top; }
+.queue-row td:first-child { border-radius: var(--pp-radius) 0 0 var(--pp-radius); }
+.queue-row td:last-child { border-radius: 0 var(--pp-radius) var(--pp-radius) 0; }
+.queue-row .ticket-id { font-weight: 600; font-size: 0.85rem; color: var(--pp-text-muted); }
+.queue-row .summary { font-weight: 500; }
+.queue-row:hover { border-color: var(--pp-primary); transform: translateX(1px); }
+/* Left accent keyed to urgency so the ranked queue is scannable at a glance */
+.queue-row.urgency-critical { border-left-color: var(--pp-critical); }
+.queue-row.urgency-high { border-left-color: var(--pp-high); }
+.queue-row.urgency-medium { border-left-color: var(--pp-medium); }
+.queue-row.urgency-low { border-left-color: var(--pp-low); }
+
+#grievance-modal {
+  border-radius: var(--pp-radius);
+  border: 1px solid var(--pp-border);
+  border-top: 3px solid var(--pp-primary);
+  max-width: 640px;
+  width: 92vw;
+  padding: 0;
+  animation: pp-modal-in 0.14s ease-out;
+}
+#grievance-modal::backdrop { background: rgba(28, 25, 23, 0.55); }
+#grievance-modal .modal-body { padding: 1.5rem; }
+#grievance-modal .modal-close { float: right; }
+@keyframes pp-modal-in {
+  from { opacity: 0; transform: translateY(6px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #grievance-modal { animation: none; }
+  .queue-row { transition: none; }
+}
+
+#map-canvas {
+  height: 560px;
+  width: 100%;
+  border-radius: var(--pp-radius);
+  border: 1px solid var(--pp-border);
+}
+.map-fallback-list { display: grid; gap: 0.6rem; margin-top: 1rem; }
+.map-legend { display: flex; gap: 1rem; margin: 0.8rem 0; font-size: 0.85rem; }
+.map-legend span { display: inline-flex; align-items: center; gap: 0.35rem; }
+.map-legend i { width: 0.7rem; height: 0.7rem; border-radius: 50%; display: inline-block; }
+
+.ward-tabs { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+.ward-tabs button {
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--pp-border);
+  background: var(--pp-surface);
+  color: var(--pp-text);
+  cursor: pointer;
+  font-size: 0.85rem;
+  width: auto;
+}
+.ward-tabs button.active { background: var(--pp-primary); color: white; border-color: var(--pp-primary); }
+
+/* "Ward notice" cards -- the planning view is the track's own differentiator,
+   so its top-issues get a distinct treatment instead of a generic stat card:
+   a large ghost rank numeral (like a stamped notice number) behind the title. */
+.issue-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin: 1.2rem 0; }
+.issue-card {
+  position: relative;
+  overflow: hidden;
+  background: var(--pp-surface);
+  border: 1px solid var(--pp-border);
+  border-top: 3px solid var(--pp-accent);
+  border-radius: var(--pp-radius);
+  padding: 1.3rem 1.1rem 1.1rem;
+}
+.issue-card::before {
+  content: attr(data-rank);
+  position: absolute;
+  top: -0.5rem;
+  right: 0.5rem;
+  font-size: 3.4rem;
+  font-weight: 700;
+  color: var(--pp-accent-bg);
+  line-height: 1;
+  z-index: 0;
+}
+.issue-card .rank {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--pp-accent);
+  background: var(--pp-accent-bg);
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+}
+.issue-card h3 { position: relative; z-index: 1; margin: 0.5rem 0 0.3rem; }
+.issue-card p { position: relative; z-index: 1; }
+.trend-arrow.rising { color: var(--pp-critical); font-weight: 600; }
+.trend-arrow.falling { color: var(--pp-low); font-weight: 600; }
+.trend-arrow.flat { color: var(--pp-text-muted); }
+
+#trend-chart-wrap { background: var(--pp-surface); border: 1px solid var(--pp-border); border-radius: var(--pp-radius); padding: 1rem; margin: 1.2rem 0; }
+
+.cluster-list { list-style: none; padding: 0; display: grid; gap: 0.6rem; }
+.cluster-list li {
+  background: var(--pp-surface);
+  border: 1px solid var(--pp-border);
+  border-radius: var(--pp-radius);
+  padding: 0.8rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* ---- Officials login ---- */
+.login-page { background: var(--pp-bg); }
+.login-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem;
+}
+.login-card {
+  width: 100%;
+  max-width: 360px;
+  background: var(--pp-surface);
+  border: 1px solid var(--pp-border);
+  border-top: 4px solid var(--pp-accent);
+  border-radius: var(--pp-radius);
+  box-shadow: var(--pp-shadow-lg, 0 10px 30px rgba(18, 38, 63, 0.15));
+  padding: 1.8rem 1.6rem;
+  margin: 0;
+}
+.login-brand { text-align: center; margin-bottom: 1.4rem; }
+.login-brand h1 { font-size: 1.25rem; margin: 0.55rem 0 0.1rem; color: var(--pp-primary-dark); }
+.login-sub {
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pp-text-muted);
+  margin: 0;
+}
+.login-error {
+  background: rgba(220, 38, 38, 0.08);
+  border: 1px solid rgba(220, 38, 38, 0.35);
+  color: #b91c1c;
+  border-radius: var(--pp-radius);
+  padding: 0.55rem 0.8rem;
+  font-size: 0.85rem;
+}
+.login-hint {
+  font-size: 0.76rem;
+  color: var(--pp-text-muted);
+  text-align: center;
+  margin: 0.9rem 0 0;
+}
+.official-nav .nav-logout {
+  opacity: 0.75;
+  border-left: 1px solid var(--pp-border);
+  padding-left: 1.2rem;
+}
+
+/* ---- Mobile: full-bleed map + bottom-sheet grievance detail ---- */
+@media (max-width: 640px) {
+  #map-canvas { height: calc(100vh - 220px); min-height: 380px; }
+
+  #grievance-modal {
+    position: fixed;
+    inset: auto 0 0 0;
+    margin: 0;
+    width: 100%;
+    max-width: none;
+    max-height: 78vh;
+    border-radius: 18px 18px 0 0;
+    border-bottom: none;
+    animation: pp-sheet-up 0.22s ease-out;
+  }
+  #grievance-modal .modal-body {
+    overflow-y: auto;
+    max-height: calc(78vh - 2rem);
+    -webkit-overflow-scrolling: touch;
+    padding: 1rem 1.2rem 1.4rem;
+  }
+  /* grab-handle affordance */
+  #grievance-modal::before {
+    content: "";
+    display: block;
+    width: 42px;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--pp-border);
+    margin: 0.55rem auto 0;
+  }
+  @keyframes pp-sheet-up {
+    from { transform: translateY(40%); opacity: 0.4; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #grievance-modal { animation: none; }
+}

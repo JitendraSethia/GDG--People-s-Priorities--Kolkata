@@ -1,0 +1,9 @@
+<header class="official-nav">
+  <span class="brand">People's Priorities · Officials</span>
+  <nav>
+    <a href="{{ url_for('official.map_view') }}" class="{{ 'active' if active == 'map' else '' }}">Map</a>
+    <a href="{{ url_for('official.dashboard') }}" class="{{ 'active' if active == 'dashboard' else '' }}">Dashboard</a>
+    <a href="{{ url_for('official.planning_view') }}" class="{{ 'active' if active == 'planning' else '' }}">Planning</a>
+    <a href="{{ url_for('official.logout') }}" class="nav-logout">Logout</a>
+  </nav>
+</header>

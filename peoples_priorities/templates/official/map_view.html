@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Live Map — People's Priorities{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/official.css') }}">{% endblock %}
+{% block body %}
+{% include "partials/_official_nav.html" %}
+<main class="container">
+  <div class="filter-bar">
+    <select id="map-ward-filter">
+      <option value="">All wards</option>
+      {% for ward in wards %}<option value="{{ ward }}">{{ ward }}</option>{% endfor %}
+    </select>
+    {% if maps_enabled %}<button type="button" id="heatmap-toggle" class="secondary">Toggle heatmap</button>{% endif %}
+  </div>
+  <div class="map-legend">
+    <span><i style="background:#16a34a"></i> Low</span>
+    <span><i style="background:#d97706"></i> Medium</span>
+    <span><i style="background:#ea580c"></i> High</span>
+    <span><i style="background:#dc2626"></i> Critical</span>
+  </div>
+
+  {% if maps_enabled %}
+    <div id="map-canvas"></div>
+    <p id="map-auth-error" class="text-muted" hidden>The map could not load (Maps key rejected for this address) — showing active grievances as a list instead.</p>
+    <div id="map-fallback-list" class="map-fallback-list"></div>
+  {% else %}
+    <p class="text-muted">No Maps API key configured yet — showing active grievances as a list. Add <code>MAPS_API_KEY</code> to <code>.env</code> for the live map.</p>
+    <div id="map-fallback-list" class="map-fallback-list"></div>
+  {% endif %}
+</main>
+{% include "partials/_grievance_modal.html" %}
+{% endblock %}
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/official_common.js') }}"></script>
+<script>window.MAPS_ENABLED = {{ 'true' if maps_enabled else 'false' }};</script>
+<script src="{{ url_for('static', filename='js/official_map.js') }}"></script>
+{% if maps_enabled %}
+<script async src="https://maps.googleapis.com/maps/api/js?key={{ maps_api_key }}&libraries=visualization&callback=initGoogleMap"></script>
+{% endif %}
+{% endblock %}

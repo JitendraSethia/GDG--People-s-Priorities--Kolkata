@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Complaints — People's Priorities{% endblock %}
+{% block body_class %}citizen-app{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/citizen.css') }}">{% endblock %}
+{% block body %}
+{% include "partials/_citizen_nav.html" %}
+<main class="container">
+  <header class="page-head">
+    <h1>Complaints</h1>
+    <p>What would you like to do?</p>
+  </header>
+
+  <div class="hub-cards">
+    <a class="hub-card" href="{{ url_for('citizen.intake_form') }}">
+      <span class="hub-card-icon">
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-pencil" xlink:href="#i-pencil"></use></svg>
+      </span>
+      <span class="hub-card-body">
+        <span class="hub-card-title">Report a new issue</span>
+        <span class="hub-card-desc">Pothole, streetlight, water, garbage — tell us what's wrong.</span>
+      </span>
+      <span class="hub-card-arrow" aria-hidden="true">
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-chevron" xlink:href="#i-chevron"></use></svg>
+      </span>
+    </a>
+    <a class="hub-card" href="{{ url_for('citizen.status_check') }}">
+      <span class="hub-card-icon gold">
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search" xlink:href="#i-search"></use></svg>
+      </span>
+      <span class="hub-card-body">
+        <span class="hub-card-title">Track a report</span>
+        <span class="hub-card-desc">See where a ticket you already submitted stands.</span>
+      </span>
+      <span class="hub-card-arrow" aria-hidden="true">
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-chevron" xlink:href="#i-chevron"></use></svg>
+      </span>
+    </a>
+  </div>
+</main>
+{% endblock %}

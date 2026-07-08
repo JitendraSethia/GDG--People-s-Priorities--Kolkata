@@ -1,0 +1,31 @@
+{% include "partials/_citizen_icons.html" %}
+<header class="citizen-appbar">
+  <div class="appbar-inner">
+    <a class="appbar-brand" href="{{ url_for('citizen.landing') }}" aria-label="People's Priorities — home">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <rect width="32" height="32" rx="8" fill="#eda12f"/>
+        <path d="M16 5.5c-4.5 0-8.2 3.6-8.2 8C7.8 19.3 16 26.5 16 26.5s8.2-7.2 8.2-13c0-4.4-3.7-8-8.2-8z" fill="#12263f"/>
+        <circle cx="16" cy="13.4" r="3" fill="#eda12f"/>
+      </svg>
+      <span class="brand-text">
+        <span class="brand-name">People's Priorities</span>
+        <span class="brand-sub">Kolkata &middot; কলকাতা</span>
+      </span>
+    </a>
+  </div>
+  <div class="paar" aria-hidden="true"></div>
+</header>
+<nav class="citizen-bottom-nav">
+  <a href="{{ url_for('citizen.landing') }}" class="{{ 'active' if request.endpoint == 'citizen.landing' else '' }}">
+    <span class="nav-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-home" xlink:href="#i-home"></use></svg></span>
+    <span class="nav-label">Home</span>
+  </a>
+  <a href="{{ url_for('citizen.complaints_hub') }}" class="{{ 'active' if request.endpoint in ('citizen.complaints_hub', 'citizen.intake_form', 'citizen.status_check', 'citizen.confirmation') else '' }}">
+    <span class="nav-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-list" xlink:href="#i-list"></use></svg></span>
+    <span class="nav-label">Complaints</span>
+  </a>
+  <a href="{{ url_for('citizen.completed') }}" class="{{ 'active' if request.endpoint == 'citizen.completed' else '' }}">
+    <span class="nav-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check-circle" xlink:href="#i-check-circle"></use></svg></span>
+    <span class="nav-label">Completed</span>
+  </a>
+</nav>

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Ticket {{ grievance.ticket_id }} — People's Priorities{% endblock %}
+{% block body_class %}citizen-app{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/citizen.css') }}">{% endblock %}
+{% block body %}
+{% include "partials/_citizen_nav.html" %}
+<main class="container">
+  <article class="ticket">
+    <div class="ticket-band">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check-circle" xlink:href="#i-check-circle"></use></svg>
+      <h1>Report received</h1>
+    </div>
+    <div class="paar" aria-hidden="true"></div>
+
+    <div class="ticket-main">
+      <p class="ticket-label">Your ticket ID</p>
+      <p class="ticket-id-display" id="ticket-copy" data-ticket="{{ grievance.ticket_id }}" title="Tap to copy">
+        {{ grievance.ticket_id }}
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-copy" xlink:href="#i-copy"></use></svg>
+      </p>
+      <p class="copy-hint" id="copy-hint">Tap the ID to copy it</p>
+    </div>
+
+    <div class="ticket-tear" aria-hidden="true"></div>
+
+    <div class="ticket-meta">
+      <span>Category: <strong>{{ grievance.category_label }}</strong></span>
+      <span class="urgency-badge {{ grievance.urgency_level }}">{{ grievance.urgency_level | capitalize }} · {{ grievance.urgency_score }}</span>
+    </div>
+
+    <div class="ticket-actions">
+      <a role="button" href="{{ url_for('citizen.status_check') }}?ticket={{ grievance.ticket_id }}">
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search" xlink:href="#i-search"></use></svg>
+        Track this report
+      </a>
+      <p class="ticket-next">It's on its way to your ward office. Come back any time with this ID to see progress.</p>
+    </div>
+  </article>
+
+  <p class="ticket-back"><a href="{{ url_for('citizen.landing') }}">Back to home</a></p>
+</main>
+{% endblock %}
+{% block extra_scripts %}
+<script>
+  /* Copy-to-clipboard with a visible result. ES5 only — this must run on
+     old Android WebViews (no arrow functions, no optional chaining). */
+  (function () {
+    var idEl = document.getElementById("ticket-copy");
+    var hint = document.getElementById("copy-hint");
+    if (!idEl) return;
+    idEl.addEventListener("click", function () {
+      var text = idEl.getAttribute("data-ticket") || "";
+      function done() { if (hint) hint.textContent = "Copied to clipboard"; }
+      function fail() { if (hint) hint.textContent = "Long-press the ID to copy it"; }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, fail);
+      } else {
+        fail();
+      }
+    });
+  })();
+</script>
+{% endblock %}

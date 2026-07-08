@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Track a Report — People's Priorities{% endblock %}
+{% block body_class %}citizen-app{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/citizen.css') }}">{% endblock %}
+{% block body %}
+{% include "partials/_citizen_nav.html" %}
+<main class="container">
+  <header class="page-head">
+    <h1>Track your report</h1>
+    <p>Enter the ticket ID from your confirmation screen.</p>
+  </header>
+
+  <form id="ticket-search" class="status-search" role="search">
+    <label for="ticket-input" class="sr-only">Ticket ID</label>
+    <input type="text" id="ticket-input" placeholder="Ticket ID — e.g. PP-000123"
+      autocapitalize="characters" autocomplete="off" spellcheck="false" required>
+    <button type="submit">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search" xlink:href="#i-search"></use></svg>
+      Check
+    </button>
+  </form>
+
+  <div id="status-result">
+    <div class="empty-state">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search" xlink:href="#i-search"></use></svg>
+      <p>Enter your ticket ID above to see where your report stands — it updates as officials act on it.</p>
+    </div>
+  </div>
+
+  <form id="chat-form" hidden>
+    <h2 class="chat-title">Ask about this report</h2>
+    <div id="chat-window" class="chat-window"></div>
+    <div class="chat-input-row">
+      <label for="chat-input" class="sr-only">Your question</label>
+      <input type="text" id="chat-input" placeholder="e.g. Why is this marked urgent?">
+      <button type="submit">
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-send" xlink:href="#i-send"></use></svg>
+        Send
+      </button>
+    </div>
+  </form>
+</main>
+{% endblock %}
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/citizen_status.js') }}"></script>
+{% endblock %}

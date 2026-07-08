@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Ward Planning — People's Priorities{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/official.css') }}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+{% endblock %}
+{% block body %}
+{% include "partials/_official_nav.html" %}
+<main class="container">
+  <h1>Ward Planning</h1>
+  <p class="text-muted">What each ward actually needs — the top recurring issues and how they're trending.</p>
+
+  <div class="ward-tabs" id="ward-tabs">
+    {% for ward in wards %}
+    <button type="button" data-ward="{{ ward }}" class="{{ 'active' if loop.first else '' }}">{{ ward }}</button>
+    {% endfor %}
+  </div>
+
+  <h2>Top Issues</h2>
+  <div class="issue-cards" id="issue-cards">
+    <p aria-busy="true">Loading…</p>
+  </div>
+
+  <h2>Trend</h2>
+  <div id="trend-chart-wrap">
+    <canvas id="trend-chart" height="90"></canvas>
+  </div>
+
+  <h2>Open Duplicate Clusters</h2>
+  <ul class="cluster-list" id="cluster-list">
+    <li aria-busy="true">Loading…</li>
+  </ul>
+</main>
+{% include "partials/_grievance_modal.html" %}
+{% endblock %}
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/official_common.js') }}"></script>
+<script src="{{ url_for('static', filename='js/official_planning.js') }}"></script>
+{% endblock %}

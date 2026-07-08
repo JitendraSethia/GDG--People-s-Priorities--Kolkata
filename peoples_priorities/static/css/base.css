@@ -1,0 +1,683 @@
+/* ==========================================================================
+   People's Priorities — base design system
+   --------------------------------------------------------------------------
+   Identity: Kolkata's civic "neel-shada" (deep navy + white) carried by a
+   woven marigold sari-border stripe — the "paar" — as the one signature
+   device. Marigold is the genda-garland accent; paper is warm, quiet.
+   Layers: 1 tokens · 2 Pico bridge · 3 global · 4 app chrome (bar + nav)
+           5 landing · 6 shared components (also used by official pages)
+           7 utilities · 8 motion & accessibility
+   NOTE: legacy --pp-* token NAMES are consumed by official.css — keep them.
+   ========================================================================== */
+
+/* 1 · Design tokens ------------------------------------------------------ */
+:root {
+  color-scheme: light;
+
+  /* Palette */
+  --pp-navy: #1e3a5f;            /* civic navy — primary                    */
+  --pp-navy-deep: #12263f;       /* app-bar, hero, ticket band              */
+  --pp-marigold: #eda12f;        /* genda marigold — signature accent       */
+  --pp-marigold-deep: #b87710;   /* paar selvedge / pressed marigold        */
+  --pp-on-marigold: #14213a;     /* text on marigold fills                  */
+
+  /* Role tokens (names shared with official.css — do not rename) */
+  --pp-primary: var(--pp-navy);
+  --pp-primary-dark: #16304f;
+  --pp-primary-fill: var(--pp-navy);
+  --pp-primary-fill-hover: #16304f;
+  --pp-accent: #8f5c0c;          /* text-safe marigold ink                  */
+  --pp-accent-bg: #f8ecd4;
+  --pp-bg: #f4f2eb;              /* warm paper                              */
+  --pp-surface: #ffffff;
+  --pp-surface-2: #fbfaf5;
+  --pp-border: #e4e0d3;
+  --pp-text: #1b2531;
+  --pp-text-muted: #5d6673;
+
+  /* Urgency ramp (semantic, shared with official) */
+  --pp-critical: #dc2626;
+  --pp-critical-bg: #fee2e2;
+  --pp-high: #c2410c;
+  --pp-high-bg: #ffedd5;
+  --pp-medium: #b45309;
+  --pp-medium-bg: #fef3c7;
+  --pp-low: #15803d;
+  --pp-low-bg: #dcfce7;
+
+  /* Type — two Indian-designed families, both with native Bengali */
+  --pp-font-display: "Anek Bangla", "Hind Siliguri", "Noto Sans Bengali", Verdana, sans-serif;
+  --pp-font-body: "Hind Siliguri", "Noto Sans Bengali", Verdana, Geneva, sans-serif;
+  --pp-fs-xs: 0.72rem;
+  --pp-fs-sm: 0.85rem;
+  --pp-fs-base: 1rem;
+  --pp-fs-md: 1.1rem;
+  --pp-fs-lg: 1.3rem;
+  --pp-fs-xl: 1.6rem;
+  --pp-fs-2xl: 2.05rem;
+  --pp-fs-3xl: 2.5rem;
+
+  /* Space */
+  --pp-sp-1: 0.25rem;
+  --pp-sp-2: 0.5rem;
+  --pp-sp-3: 0.75rem;
+  --pp-sp-4: 1rem;
+  --pp-sp-5: 1.5rem;
+  --pp-sp-6: 2rem;
+  --pp-sp-7: 3rem;
+
+  /* Shape */
+  --pp-radius: 12px;             /* legacy name, used everywhere            */
+  --pp-r-sm: 8px;
+  --pp-r-lg: 16px;
+  --pp-r-full: 999px;
+
+  /* Elevation — navy-tinted key light */
+  --pp-shadow-sm: 0 1px 2px rgba(15, 29, 48, 0.05), 0 2px 8px rgba(15, 29, 48, 0.05);
+  --pp-shadow-md: 0 2px 4px rgba(15, 29, 48, 0.06), 0 10px 24px rgba(15, 29, 48, 0.09);
+  --pp-shadow-lg: 0 4px 10px rgba(15, 29, 48, 0.10), 0 20px 44px rgba(15, 29, 48, 0.16);
+  --pp-shadow-up: 0 -4px 16px rgba(15, 29, 48, 0.08);
+
+  /* Motion */
+  --pp-t-fast: 130ms;
+  --pp-t-med: 240ms;
+  --pp-ease: cubic-bezier(0.2, 0.7, 0.25, 1);
+
+  /* Focus */
+  --pp-focus-ring: var(--pp-marigold);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --pp-primary: #4f7caf;
+    --pp-primary-dark: #6c95c4;
+    --pp-primary-fill: #2e5480;
+    --pp-primary-fill-hover: #3a659a;
+    --pp-marigold: #f2b14c;
+    --pp-marigold-deep: #c98a1b;
+    --pp-accent: #f0ac42;
+    --pp-accent-bg: rgba(242, 177, 76, 0.15);
+    --pp-bg: #101520;
+    --pp-surface: #1a212e;
+    --pp-surface-2: #212938;
+    --pp-border: #323c4e;
+    --pp-text: #e9ecf2;
+    --pp-text-muted: #9ba6b7;
+    --pp-critical: #f07171;
+    --pp-critical-bg: rgba(240, 113, 113, 0.14);
+    --pp-high: #f0924e;
+    --pp-high-bg: rgba(240, 146, 78, 0.14);
+    --pp-medium: #e8b34b;
+    --pp-medium-bg: rgba(232, 179, 75, 0.15);
+    --pp-low: #57c878;
+    --pp-low-bg: rgba(87, 200, 120, 0.14);
+    --pp-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.30);
+    --pp-shadow-md: 0 2px 4px rgba(0, 0, 0, 0.40), 0 10px 24px rgba(0, 0, 0, 0.40);
+    --pp-shadow-lg: 0 4px 10px rgba(0, 0, 0, 0.45), 0 20px 44px rgba(0, 0, 0, 0.55);
+    --pp-shadow-up: 0 -4px 16px rgba(0, 0, 0, 0.40);
+  }
+}
+
+/* 2 · Pico bridge — re-theme Pico's own tokens so buttons, inputs and
+      cards inherit our palette instead of Pico's default blue ------------- */
+:root {
+  --pico-font-family: var(--pp-font-body);
+  --pico-border-radius: var(--pp-radius);
+  --pico-background-color: var(--pp-bg);
+  --pico-color: var(--pp-text);
+  --pico-muted-color: var(--pp-text-muted);
+  --pico-primary: var(--pp-primary);
+  --pico-primary-background: var(--pp-primary-fill);
+  --pico-primary-border: var(--pp-primary-fill);
+  --pico-primary-hover: var(--pp-primary-fill-hover);
+  --pico-primary-hover-background: var(--pp-primary-fill-hover);
+  --pico-primary-focus: rgba(237, 161, 47, 0.45);
+  --pico-primary-inverse: #ffffff;
+  --pico-form-element-background-color: var(--pp-surface);
+  --pico-form-element-border-color: var(--pp-border);
+  --pico-form-element-color: var(--pp-text);
+  --pico-form-element-placeholder-color: var(--pp-text-muted);
+  --pico-form-element-active-border-color: var(--pp-primary);
+  --pico-form-element-focus-color: rgba(237, 161, 47, 0.40);
+  --pico-card-background-color: var(--pp-surface);
+  --pico-card-border-color: var(--pp-border);
+  --pico-card-box-shadow: var(--pp-shadow-sm);
+}
+
+/* 3 · Global ------------------------------------------------------------- */
+body {
+  font-family: var(--pp-font-body);
+  background: var(--pp-bg);
+  color: var(--pp-text);
+  line-height: 1.55;
+  -webkit-tap-highlight-color: rgba(237, 161, 47, 0.18);
+}
+
+[hidden] { display: none !important; }
+
+::selection { background: rgba(237, 161, 47, 0.35); }
+
+h1, h2, h3 {
+  font-family: var(--pp-font-display);
+  color: var(--pp-text);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+h1 { font-size: var(--pp-fs-xl); font-weight: 700; }
+h2 { font-size: var(--pp-fs-md); font-weight: 700; }
+h3 { font-size: var(--pp-fs-base); font-weight: 700; }
+
+a { color: var(--pp-primary); }
+a[role="button"] { text-decoration: none; }
+
+/* Touch targets: every tappable control clears the 44px guideline
+   (badges/chips stay visually compact — their containing row is the target) */
+button, a[role="button"], input, select { min-height: 44px; }
+
+button, a[role="button"], [type="submit"], [type="button"] {
+  font-family: var(--pp-font-body);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition:
+    background-color var(--pp-t-fast) var(--pp-ease),
+    border-color var(--pp-t-fast) var(--pp-ease),
+    color var(--pp-t-fast) var(--pp-ease),
+    box-shadow var(--pp-t-fast) var(--pp-ease),
+    transform var(--pp-t-fast) var(--pp-ease);
+}
+button:active, a[role="button"]:active { transform: scale(0.98); }
+
+button.secondary, a[role="button"].secondary {
+  background: var(--pp-surface);
+  border-color: var(--pp-border);
+  color: var(--pp-text);
+}
+button.secondary:hover, a[role="button"]:hover.secondary {
+  background: var(--pp-surface-2);
+  border-color: var(--pp-text-muted);
+  color: var(--pp-text);
+}
+
+input, select, textarea {
+  font-family: var(--pp-font-body);
+}
+
+/* Visible keyboard focus — standalone rules so an unsupported
+   :focus-visible never invalidates anything else */
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--pp-focus-ring);
+  outline-offset: 2px;
+}
+
+/* 4 · App chrome: top bar, paar stripe, bottom nav ------------------------ */
+body.citizen-app {
+  padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); /* clears fixed nav */
+}
+
+.citizen-appbar {
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  background: var(--pp-navy-deep);
+  padding-top: env(safe-area-inset-top, 0px);
+}
+.appbar-inner {
+  display: flex;
+  align-items: center;
+  min-height: 54px;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 var(--pp-sp-4);
+}
+.appbar-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  color: #ffffff;
+  min-height: 44px;
+}
+.brand-mark { width: 30px; height: 30px; flex: 0 0 auto; display: block; }
+.brand-text { display: flex; flex-direction: column; line-height: 1.15; }
+.brand-name {
+  font-family: var(--pp-font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.005em;
+  color: #ffffff;
+}
+.brand-sub {
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+/* The signature: a woven marigold sari-border ("paar").
+   Vertical weave ticks over a selvedge-edged marigold band. */
+.paar {
+  height: 7px;
+  background:
+    repeating-linear-gradient(90deg, rgba(18, 38, 63, 0.28) 0 2px, transparent 2px 8px),
+    linear-gradient(180deg, var(--pp-marigold-deep) 0 1px, var(--pp-marigold) 1px 6px, var(--pp-marigold-deep) 6px 7px);
+}
+
+.citizen-bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  display: flex;
+  background: var(--pp-surface);
+  border-top: 1px solid var(--pp-border);
+  box-shadow: var(--pp-shadow-up);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.citizen-bottom-nav a {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 0.55rem 0 0.5rem;
+  min-height: 62px;
+  color: var(--pp-text-muted);
+  text-decoration: none;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.citizen-bottom-nav a::before {
+  /* marigold echo of the paar — the active-tab indicator */
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 38px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: var(--pp-marigold);
+  transform: translateX(-50%) scaleX(0);
+  transition: transform var(--pp-t-med) var(--pp-ease);
+}
+.citizen-bottom-nav a.active::before { transform: translateX(-50%) scaleX(1); }
+.citizen-bottom-nav a.active { color: var(--pp-primary); }
+.citizen-bottom-nav .nav-icon { display: flex; line-height: 1; }
+.citizen-bottom-nav .nav-icon .icon { width: 23px; height: 23px; }
+
+/* 5 · Landing ------------------------------------------------------------- */
+.citizen-landing { padding: 0; }
+
+.citizen-landing .hero {
+  background: var(--pp-navy-deep);
+  color: #ffffff;
+  padding: var(--pp-sp-6) 0 calc(var(--pp-sp-6) + 0.25rem);
+}
+.hero-inner {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 var(--pp-sp-5);
+}
+.hero-eyebrow {
+  font-family: var(--pp-font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--pp-marigold);
+  margin: 0 0 var(--pp-sp-2);
+}
+.citizen-landing .hero h1 {
+  font-family: var(--pp-font-display);
+  font-size: var(--pp-fs-2xl);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  color: #ffffff;
+  margin: 0 0 var(--pp-sp-3);
+}
+.citizen-landing .hero .lede {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.98rem;
+  line-height: 1.6;
+  margin: 0 0 var(--pp-sp-5);
+}
+.cta-row { display: flex; gap: var(--pp-sp-3); flex-wrap: wrap; }
+.cta-row a[role="button"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.98rem;
+}
+.cta-primary[role="button"] {
+  background: var(--pp-marigold);
+  border-color: var(--pp-marigold);
+  color: var(--pp-on-marigold);
+  font-weight: 700;
+  box-shadow: var(--pp-shadow-md);
+}
+.cta-primary[role="button"]:hover,
+.cta-primary[role="button"]:active {
+  background: #e2941c;
+  border-color: #e2941c;
+  color: var(--pp-on-marigold);
+}
+.cta-primary[role="button"]:focus-visible { outline-color: #ffffff; }
+.cta-ghost[role="button"] {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #ffffff;
+}
+.cta-ghost[role="button"]:hover,
+.cta-ghost[role="button"]:active {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.8);
+  color: #ffffff;
+}
+.cta-ghost[role="button"]:focus-visible { outline-color: var(--pp-marigold); }
+
+.landing-body { padding-top: var(--pp-sp-5); }
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--pp-sp-3);
+  margin: 0 0 var(--pp-sp-3);
+}
+.section-head h2, .how-section h2 { margin: 0; font-size: var(--pp-fs-md); }
+.how-section h2 { margin-bottom: var(--pp-sp-3); }
+.how-section { margin: var(--pp-sp-6) 0 var(--pp-sp-5); }
+
+.live-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.18rem 0.6rem;
+  border-radius: var(--pp-r-full);
+  background: var(--pp-low-bg);
+  color: var(--pp-low);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pp-ping-dot 1.8s var(--pp-ease) infinite;
+}
+
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--pp-sp-3); }
+.steps li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--pp-sp-3);
+  background: var(--pp-surface);
+  border: 1px solid var(--pp-border);
+  border-radius: var(--pp-r-lg);
+  padding: 0.9rem 1rem;
+  box-shadow: var(--pp-shadow-sm);
+}
+.steps .step-body { display: flex; flex-direction: column; gap: 0.1rem; }
+.steps .step-body strong { font-size: 0.95rem; line-height: 1.35; }
+.steps .step-body span { font-size: var(--pp-fs-sm); color: var(--pp-text-muted); }
+
+.step-num {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--pp-accent-bg);
+  color: var(--pp-accent);
+  font-family: var(--pp-font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* 6 · Shared components (also rendered on official pages) ----------------- */
+.stat-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--pp-sp-3);
+  margin: var(--pp-sp-4) 0 var(--pp-sp-6);
+}
+.citizen-landing .stat-strip { margin: 0; }
+.stat-card {
+  background: var(--pp-surface);
+  border: 1px solid var(--pp-border);
+  border-radius: var(--pp-r-lg);
+  padding: 1.1rem 0.75rem 0.95rem;
+  text-align: center;
+  box-shadow: var(--pp-shadow-sm);
+}
+.stat-value {
+  display: block;
+  font-family: var(--pp-font-display);
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--pp-primary);
+  font-variant-numeric: tabular-nums;
+}
+.stat-label {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: var(--pp-fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--pp-text-muted);
+}
+
+/* Urgency badges */
+.urgency-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.65rem;
+  border-radius: var(--pp-r-full);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  border: 1px solid transparent;
+  line-height: 1.6;
+}
+.urgency-badge.low { background: var(--pp-low-bg); color: var(--pp-low); border-color: rgba(21, 128, 61, 0.25); }
+.urgency-badge.medium { background: var(--pp-medium-bg); color: var(--pp-medium); border-color: rgba(180, 83, 9, 0.25); }
+.urgency-badge.high { background: var(--pp-high-bg); color: var(--pp-high); border-color: rgba(194, 65, 12, 0.25); }
+.urgency-badge.critical { background: var(--pp-critical-bg); color: var(--pp-critical); border-color: rgba(220, 38, 38, 0.3); }
+
+.urgency-reasons {
+  display: none;
+  margin-top: var(--pp-sp-2);
+  padding: 0.6rem 0.85rem;
+  background: var(--pp-bg);
+  border: 1px dashed var(--pp-border);
+  border-radius: var(--pp-r-sm);
+  font-size: var(--pp-fs-sm);
+}
+.urgency-reasons.open { display: block; }
+.urgency-reasons ul { margin: 0.35rem 0 0; padding-left: 1.1rem; }
+
+.cluster-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: var(--pp-r-full);
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--pp-accent-bg);
+  color: var(--pp-accent);
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+/* Chatbot */
+.chat-window {
+  border: 1px solid var(--pp-border);
+  border-radius: var(--pp-r-lg);
+  background: var(--pp-surface);
+  padding: var(--pp-sp-4);
+  min-height: 260px;
+  max-height: 55vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: var(--pp-sp-3);
+  box-shadow: var(--pp-shadow-sm);
+}
+.chat-bubble {
+  max-width: 82%;
+  padding: 0.55rem 0.9rem;
+  border-radius: 16px;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  animation: pp-rise var(--pp-t-med) var(--pp-ease);
+}
+.chat-bubble.user {
+  align-self: flex-end;
+  background: var(--pp-primary-fill);
+  color: #ffffff;
+  border-bottom-right-radius: 4px;
+}
+.chat-bubble.bot {
+  align-self: flex-start;
+  background: var(--pp-bg);
+  border: 1px solid var(--pp-border);
+  border-bottom-left-radius: 4px;
+}
+
+/* Timeline — styled as a tram route: track, stops, and a pulsing
+   "you are here" marker. Classless <li> (official history) stays legible. */
+.timeline { list-style: none; padding: 0; margin: var(--pp-sp-4) 0 0; }
+.timeline li {
+  position: relative;
+  padding-left: 2rem;
+  padding-bottom: 1.15rem;
+  margin-left: 0.55rem;
+  border-left: 3px solid var(--pp-border);
+  text-transform: capitalize;
+  font-size: 0.95rem;
+}
+.timeline li:last-child { border-left-color: transparent; padding-bottom: 0.2rem; }
+.timeline li::before {
+  content: "";
+  position: absolute;
+  left: calc(-0.55rem - 1.5px);
+  top: 0.1rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  box-sizing: border-box;
+  background: var(--pp-surface);
+  border: 3px solid var(--pp-border);
+}
+.timeline li.done { border-left-color: var(--pp-low); }
+.timeline li.done::before { background: var(--pp-low); border-color: var(--pp-low); }
+.timeline li.done::after {
+  content: "\2713";
+  position: absolute;
+  left: calc(-0.55rem - 1.5px);
+  top: 0.1rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+}
+.timeline li.current::before {
+  background: var(--pp-marigold);
+  border-color: var(--pp-marigold);
+  animation: pp-ping-ring 2s var(--pp-ease) infinite;
+}
+.timeline li.current strong { color: var(--pp-primary); }
+.timeline strong { font-weight: 600; }
+.timeline .ts { display: block; font-size: 0.78rem; color: var(--pp-text-muted); text-transform: none; }
+
+/* 7 · Utilities ------------------------------------------------------------ */
+.text-muted { color: var(--pp-text-muted); }
+.center { text-align: center; }
+
+.icon {
+  width: 1.2em;
+  height: 1.2em;
+  display: inline-block;
+  vertical-align: -0.22em;
+  flex: 0 0 auto;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.page-head { margin: var(--pp-sp-5) 0 var(--pp-sp-4); }
+.page-head h1 { margin: 0 0 0.25rem; font-size: var(--pp-fs-xl); }
+.page-head p { margin: 0; color: var(--pp-text-muted); font-size: 0.92rem; }
+
+/* 8 · Motion & accessibility ------------------------------------------------ */
+@keyframes pp-ping-dot {
+  0% { box-shadow: 0 0 0 0 rgba(21, 128, 61, 0.4); }
+  100% { box-shadow: 0 0 0 6px rgba(21, 128, 61, 0); }
+}
+@keyframes pp-ping-ring {
+  0% { box-shadow: 0 0 0 0 rgba(237, 161, 47, 0.45); }
+  100% { box-shadow: 0 0 0 9px rgba(237, 161, 47, 0); }
+}
+@keyframes pp-rise {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Narrow-viewport pass (typical Android phones, ~360-430px) ---------------- */
+@media (max-width: 480px) {
+  .container { padding-left: var(--pp-sp-4); padding-right: var(--pp-sp-4); }
+  .hero-inner { padding: 0 var(--pp-sp-4); }
+  .citizen-landing .hero h1 { font-size: 1.9rem; }
+  .citizen-landing .hero .lede { font-size: 0.94rem; }
+  .cta-row { flex-direction: column; align-items: stretch; }
+  .cta-row a[role="button"] { width: 100%; }
+  .citizen-landing .stat-strip { grid-template-columns: repeat(3, 1fr); gap: var(--pp-sp-2); }
+  .citizen-landing .stat-card { padding: 0.85rem 0.4rem 0.75rem; }
+  .citizen-landing .stat-value { font-size: 1.35rem; }
+  .citizen-landing .stat-label { font-size: 0.62rem; letter-spacing: 0.04em; }
+}
