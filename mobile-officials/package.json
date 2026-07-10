@@ -1,0 +1,14 @@
+{
+  "name": "mobile-officials",
+  "version": "1.0.0",
+  "description": "PP Authority - officials app for People's Priorities",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@capacitor/android": "^8.4.1",
+    "@capacitor/core": "^8.4.1"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.4.1"
+  }
+}
